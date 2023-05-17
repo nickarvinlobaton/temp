@@ -19,7 +19,7 @@ public class HelloController {
     }
 
     @PostMapping("/")
-    public String store(@RequestBody int id) {
+    public String store(@RequestBody String id) {
         return "STORED " + id;
     }
 
