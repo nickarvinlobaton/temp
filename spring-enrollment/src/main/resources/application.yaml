@@ -8,5 +8,11 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
+    show-sql: true
   h2:
     console.enabled: true
+  logging:
+    pattern.console: pattern.console=%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(%logger{0}){blue} %clr(%m){faint}%n
+    level.org.hibernate:
+          type: TRACE
+          SQL: DEBUG

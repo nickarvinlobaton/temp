@@ -1,11 +1,11 @@
 package com.example.springenrollment.entity;
 
-import com.example.springenrollment.repository.SubjectRepository;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -22,5 +22,13 @@ public class Classes {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "student_classes",
+            joinColumns = @JoinColumn(name = "classes_id", referencedColumnName = "id", table = "classes"),
+            inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id", table = "students")
+    )
+    private Set<Student> students;
 
 }

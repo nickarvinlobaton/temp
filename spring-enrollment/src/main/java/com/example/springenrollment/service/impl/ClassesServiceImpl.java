@@ -2,12 +2,15 @@ package com.example.springenrollment.service.impl;
 
 import com.example.springenrollment.dto.ClassesDto;
 import com.example.springenrollment.entity.Classes;
+import com.example.springenrollment.entity.Student;
+import com.example.springenrollment.entity.User;
 import com.example.springenrollment.repository.ClassesRepository;
 import com.example.springenrollment.service.ClassesService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

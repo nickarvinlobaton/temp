@@ -1,6 +1,5 @@
 package com.example.springenrollment.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,12 +16,4 @@ public class User {
     private String lastname;
     @Column(nullable = false, unique = true)
     private String email;
-
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Teacher teacher;
-
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
-    private Student student;
 }

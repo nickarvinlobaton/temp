@@ -1,5 +1,8 @@
 package com.example.springenrollment.dto;
 
+import java.util.Set;
+
+import com.example.springenrollment.entity.Student;
 import com.example.springenrollment.entity.Subject;
 import com.example.springenrollment.entity.Teacher;
 import lombok.AllArgsConstructor;
@@ -15,4 +18,5 @@ public class ClassesDto {
     private long id;
     private Subject subject;
     private Teacher teacher;
+    private Set<Student> students;
 }
