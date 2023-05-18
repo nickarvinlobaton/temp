@@ -18,5 +18,7 @@ public class ClassesDto {
     private long id;
     private Subject subject;
     private Teacher teacher;
+    private String schedule;
+    private String time;
     private Set<Student> students;
 }

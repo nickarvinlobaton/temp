@@ -15,6 +15,9 @@ public class Classes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String schedule;
+    private String time;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subject_id")
     private Subject subject;
