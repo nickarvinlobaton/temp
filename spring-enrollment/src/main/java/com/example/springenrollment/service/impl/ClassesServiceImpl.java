@@ -68,7 +68,7 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ClassesDto addStudent(long id, StudentDto studentDto) {
+    public ClassesDto addStudentToClass(long id, StudentDto studentDto) {
         Optional<Classes> optionalClasses = classesRepository.findById(id);
         if (!optionalClasses.isPresent()) {
             throw new EntityNotFoundException("Class with id: " + id + " not found.");
@@ -78,6 +78,34 @@ public class ClassesServiceImpl implements ClassesService {
         Student student = modelMapper.map(studentDto, Student.class);
 
         classes.addStudent(student);
+        Classes savedClass = classesRepository.save(classes);
+
+        return modelMapper.map(savedClass, ClassesDto.class);
+    }
+
+    @Override
+    public ClassesDto deleteStudentFromClass(long classId, long studentId) {
+        Optional<Classes> optionalClasses = classesRepository.findById(classId);
+        if (!optionalClasses.isPresent()) {
+            throw new EntityNotFoundException("Class with id: " + classId + " not found.");
+        }
+
+        Classes classes = optionalClasses.get();
+
+        Student student = null;
+
+        for (Student s: classes.getStudents()) {
+            long currId = s.getId();
+            if (currId == studentId) {
+                student = s;
+            }
+        }
+
+        if (student == null) {
+            throw new EntityNotFoundException("Student with id: " + studentId + " not found.");
+        }
+
+        classes.getStudents().remove(student);
         Classes savedClass = classesRepository.save(classes);
 
         return modelMapper.map(savedClass, ClassesDto.class);

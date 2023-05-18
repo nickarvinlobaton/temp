@@ -45,7 +45,12 @@ public class ClassesController {
 
     @PostMapping("{id}/student")
     @ResponseStatus(HttpStatus.CREATED)
-    public ClassesDto addStudent(@PathVariable(name = "id") long id, @RequestBody StudentDto studentDto) {
-        return classesService.addStudent(id, studentDto);
+    public ClassesDto addStudentToClass(@PathVariable(name = "id") long id, @RequestBody StudentDto studentDto) {
+        return classesService.addStudentToClass(id, studentDto);
+    }
+
+    @DeleteMapping
+    public ClassesDto deleteStudentFromClass(@RequestParam long class_id, @RequestParam long student_id) {
+        return classesService.deleteStudentFromClass(class_id, student_id);
     }
 }

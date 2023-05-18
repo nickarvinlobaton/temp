@@ -11,5 +11,6 @@ public interface ClassesService {
     ClassesDto delete(long id);
     ClassesDto find(long id);
     List<ClassesDto> getAll();
-    ClassesDto addStudent(long id, StudentDto studentDto);
+    ClassesDto addStudentToClass(long id, StudentDto studentDto);
+    ClassesDto deleteStudentFromClass(long classId, long studentId);
 }
