@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,16 +69,16 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
-    public ClassesDto addStudentToClass(long id, StudentDto studentDto) {
+    public ClassesDto addStudentToClass(long id, Set<StudentDto> studentDtoSet) {
         Optional<Classes> optionalClasses = classesRepository.findById(id);
         if (!optionalClasses.isPresent()) {
             throw new EntityNotFoundException("Class with id: " + id + " not found.");
         }
         Classes classes = optionalClasses.get();
 
-        Student student = modelMapper.map(studentDto, Student.class);
+        Set<Student> studentSet = studentDtoSet.stream().map((s) -> modelMapper.map(s, Student.class)).collect(Collectors.toSet());
 
-        classes.addStudent(student);
+        classes.addStudent(studentSet);
         Classes savedClass = classesRepository.save(classes);
 
         return modelMapper.map(savedClass, ClassesDto.class);

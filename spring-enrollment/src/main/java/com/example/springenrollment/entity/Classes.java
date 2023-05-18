@@ -34,8 +34,8 @@ public class Classes {
     )
     private Set<Student> students;
 
-    public void addStudent(Student student) {
-        students.add(student);
+    public void addStudent(Set<Student> students) {
+        this.students.addAll(students);
     }
 
 }

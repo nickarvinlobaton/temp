@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -43,10 +44,10 @@ public class ClassesController {
         return new ResponseEntity<>(classesService.find(id), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/student")
+    @PostMapping("{id}/students")
     @ResponseStatus(HttpStatus.CREATED)
-    public ClassesDto addStudentToClass(@PathVariable(name = "id") long id, @RequestBody StudentDto studentDto) {
-        return classesService.addStudentToClass(id, studentDto);
+    public ClassesDto addStudentToClass(@PathVariable(name = "id") long id, @RequestBody Set<StudentDto> studentDtoSet) {
+        return classesService.addStudentToClass(id, studentDtoSet);
     }
 
     @DeleteMapping
