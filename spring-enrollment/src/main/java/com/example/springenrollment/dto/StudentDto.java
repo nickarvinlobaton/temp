@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class StudentDto {
     private long id;
-    private String yearLevel;
+    private int yearLevel;
     private String program;
     private User user;
 }

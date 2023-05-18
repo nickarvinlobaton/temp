@@ -2,6 +2,7 @@ package com.example.springenrollment.service.impl;
 
 import com.example.springenrollment.dto.SubjectDto;
 import com.example.springenrollment.entity.Subject;
+import com.example.springenrollment.exception.EntityNotFoundException;
 import com.example.springenrollment.repository.SubjectRepository;
 import com.example.springenrollment.service.SubjectService;
 import lombok.AllArgsConstructor;
@@ -40,14 +41,20 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public SubjectDto delete(long id) {
-        Subject subject = subjectRepository.findById(id).get();
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if (!optionalSubject.isPresent()) {
+            throw new EntityNotFoundException("Subject with id: " + id + " not found.");
+        }
         subjectRepository.deleteById(id);
-        return modelMapper.map(subject, SubjectDto.class);
+        return modelMapper.map(optionalSubject.get(), SubjectDto.class);
     }
 
     @Override
     public SubjectDto find(long id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if (!optionalSubject.isPresent()) {
+            throw new EntityNotFoundException("Subject with id: " + id + " not found.");
+        }
 
         return modelMapper.map(optionalSubject.get(), SubjectDto.class);
     }

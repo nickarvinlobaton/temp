@@ -1,6 +1,7 @@
 package com.example.springenrollment.service.impl;
 
 import com.example.springenrollment.entity.User;
+import com.example.springenrollment.exception.EntityNotFoundException;
 import com.example.springenrollment.repository.UserRepository;
 import com.example.springenrollment.service.UserService;
 import lombok.AllArgsConstructor;
@@ -32,13 +33,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User delete(long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new EntityNotFoundException("User with id: " + id + " not found.");
+        }
         userRepository.deleteById(id);
-        return userRepository.findById(id).get();
+        return optionalUser.get();
     }
 
     @Override
     public User find(long id) {
         Optional<User> optionalUser = userRepository.findById(id);
+        if (!optionalUser.isPresent()) {
+            throw new EntityNotFoundException("User with id: " + id + " not found.");
+        }
         return optionalUser.get();
     }
 

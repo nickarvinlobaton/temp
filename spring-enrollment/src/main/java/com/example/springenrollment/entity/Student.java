@@ -12,7 +12,7 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "year_level", nullable = false)
-    private String yearLevel;
+    private int yearLevel;
     @Column(nullable = false)
     private String program;
 

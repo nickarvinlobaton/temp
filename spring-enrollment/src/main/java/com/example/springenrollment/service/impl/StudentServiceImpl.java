@@ -2,8 +2,8 @@ package com.example.springenrollment.service.impl;
 
 import com.example.springenrollment.dto.StudentDto;
 import com.example.springenrollment.entity.Student;
+import com.example.springenrollment.exception.EntityNotFoundException;
 import com.example.springenrollment.repository.StudentRepository;
-import com.example.springenrollment.repository.UserRepository;
 import com.example.springenrollment.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,7 +19,6 @@ public class StudentServiceImpl implements StudentService {
 
     private ModelMapper modelMapper;
     private StudentRepository studentRepository;
-    private UserRepository userRepository;
 
     @Override
     public StudentDto create(StudentDto studentDto) {
@@ -42,14 +41,20 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentDto delete(long id) {
-        Student student = studentRepository.findById(id).get();
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (!optionalStudent.isPresent()) {
+            throw new EntityNotFoundException("Student with id: " + id + " not found.");
+        }
         studentRepository.deleteById(id);
-        return modelMapper.map(student, StudentDto.class);
+        return modelMapper.map(optionalStudent.get(), StudentDto.class);
     }
 
     @Override
     public StudentDto find(long id) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (!optionalStudent.isPresent()) {
+            throw new EntityNotFoundException("Student with id: " + id + " not found.");
+        }
         Student student = optionalStudent.get();
         return modelMapper.map(student, StudentDto.class);
     }

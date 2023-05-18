@@ -4,13 +4,13 @@ import com.example.springenrollment.dto.ClassesDto;
 import com.example.springenrollment.entity.Classes;
 import com.example.springenrollment.entity.Student;
 import com.example.springenrollment.entity.User;
+import com.example.springenrollment.exception.EntityNotFoundException;
 import com.example.springenrollment.repository.ClassesRepository;
 import com.example.springenrollment.service.ClassesService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,14 +41,20 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public ClassesDto delete(long id) {
-        Classes classes = classesRepository.findById(id).get();
+        Optional<Classes> optionalClasses = classesRepository.findById(id);
+        if (!optionalClasses.isPresent()) {
+            throw new EntityNotFoundException("Class with id: " + id + " not found.");
+        }
         classesRepository.deleteById(id);
-        return modelMapper.map(classes, ClassesDto.class);
+        return modelMapper.map(optionalClasses.get(), ClassesDto.class);
     }
 
     @Override
     public ClassesDto find(long id) {
         Optional<Classes> optionalClasses = classesRepository.findById(id);
+        if (!optionalClasses.isPresent()) {
+            throw new EntityNotFoundException("Class with id: " + id + " not found.");
+        }
         Classes classes = optionalClasses.get();
         return modelMapper.map(classes, ClassesDto.class);
     }
