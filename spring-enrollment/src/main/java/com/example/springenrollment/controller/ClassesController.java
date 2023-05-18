@@ -1,6 +1,7 @@
 package com.example.springenrollment.controller;
 
 import com.example.springenrollment.dto.ClassesDto;
+import com.example.springenrollment.dto.StudentDto;
 import com.example.springenrollment.service.ClassesService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,11 @@ public class ClassesController {
     @GetMapping("{id}")
     public ResponseEntity<ClassesDto> find(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(classesService.find(id), HttpStatus.OK);
+    }
+
+    @PostMapping("{id}/student")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClassesDto addStudent(@PathVariable(name = "id") long id, @RequestBody StudentDto studentDto) {
+        return classesService.addStudent(id, studentDto);
     }
 }

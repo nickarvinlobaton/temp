@@ -1,6 +1,7 @@
 package com.example.springenrollment.service.impl;
 
 import com.example.springenrollment.dto.ClassesDto;
+import com.example.springenrollment.dto.StudentDto;
 import com.example.springenrollment.entity.Classes;
 import com.example.springenrollment.entity.Student;
 import com.example.springenrollment.entity.User;
@@ -64,5 +65,21 @@ public class ClassesServiceImpl implements ClassesService {
         List<Classes> classsesList = classesRepository.findAll();
 
         return classsesList.stream().map((classes -> modelMapper.map(classes, ClassesDto.class))).collect(Collectors.toList());
+    }
+
+    @Override
+    public ClassesDto addStudent(long id, StudentDto studentDto) {
+        Optional<Classes> optionalClasses = classesRepository.findById(id);
+        if (!optionalClasses.isPresent()) {
+            throw new EntityNotFoundException("Class with id: " + id + " not found.");
+        }
+        Classes classes = optionalClasses.get();
+
+        Student student = modelMapper.map(studentDto, Student.class);
+
+        classes.addStudent(student);
+        Classes savedClass = classesRepository.save(classes);
+
+        return modelMapper.map(savedClass, ClassesDto.class);
     }
 }
