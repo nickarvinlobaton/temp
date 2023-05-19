@@ -2,18 +2,18 @@ package com.example.springenrollment.error.handler;
 
 import com.example.springenrollment.error.ApiError;
 import com.example.springenrollment.exception.EntityNotFoundException;
-import jakarta.annotation.Nullable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -23,16 +23,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    protected ResponseEntity<Object> handleDataIntegrityViolation(org.springframework.dao.DataIntegrityViolationException ex) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleDataIntegrityViolation(org.springframework.dao.DataIntegrityViolationException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Unique index or primary key violation", ex);
-        return buildResponseEntity(apiError);
+        return apiError;
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleEntityNotFound(EntityNotFoundException ex) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
         apiError.setMessage(ex.getMessage());
-        return buildResponseEntity(apiError);
+        return apiError;
     }
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
